@@ -1,0 +1,1 @@
+import{d as s,o,c,a as e}from"./index.61ab26fb.js";const l={class:"flex h-full w-full flex-col"},t=e("div",{class:"h-[3rem]"},"123",-1),a=e("div",{class:"flex h-[calc(100%-3rem)] flex-grow"},[e("aside",{class:"h-full w-[460px]"},"123"),e("div",{class:"flex-grow"})],-1),_=[t,a],f=s({__name:"StopView",setup(n){return(r,i)=>(o(),c("section",l,_))}});export{f as default};
