@@ -1,0 +1,1 @@
+import{d as s,o,c,a as e}from"./index.3edc3646.js";const l={class:"flex h-full w-full flex-col"},a=e("div",{class:"h-[3rem]"},"123",-1),t=e("div",{class:"flex h-[calc(100%-3rem)] flex-grow"},[e("aside",{class:"h-full w-[460px]"},"123"),e("div",{class:"flex-grow"})],-1),_=[a,t],f=s({__name:"NearbyView",setup(n){return(r,i)=>(o(),c("section",l,_))}});export{f as default};
