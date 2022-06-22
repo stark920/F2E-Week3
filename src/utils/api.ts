@@ -2,8 +2,6 @@ import axios from 'axios'
 import pick from './pick'
 import { useBusStore } from '@/stores/bus'
 const busStore = useBusStore()
-import {useToast} from 'vue-toastification'
-const toast = useToast()
 
 let token;
 (function() {
@@ -47,7 +45,6 @@ const busRequest = axios.create({
 
 busRequest.interceptors.request.use(
   function (config) {
-    toast.error('丟了')
     return config
   },
   function (error) {
