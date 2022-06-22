@@ -3,8 +3,11 @@ import pick from './pick'
 import { useBusStore } from '@/stores/bus'
 const busStore = useBusStore()
 
-let token;
-(function() {
+const busRequest = axios.create({
+  baseURL: 'https://ptx.transportdata.tw/MOTC/v2/Bus',
+})
+
+;(function() {
   fetch('https://tdx.transportdata.tw/auth/realms/TDXConnect/protocol/openid-connect/token', {
     body: `grant_type=client_credentials&client_id=pb220416-e87a0a64-5d08-4c1c&client_secret=6f88b9c0-3851-4258-a962-ba26ef1a8d06`,
     headers: {
@@ -12,39 +15,36 @@ let token;
     },
     method: 'POST'
   }).then(res => res.json()).then(data => {
-    token = {
-      Authorization: `${data.token_type} ${data.access_token}`
-    }
+    busRequest.defaults.headers.common['Authorization'] = `${data.token_type} ${data.access_token}`
   })
 })()
 
-export const cities = {
-  Taipei: '台北 / 新北',
-  Taoyuan: '桃園',
-  Taichung: '台中',
-  Tainan: '台南',
-  Kaohsiung: '高雄',
-  Hsinchu: '新竹',
-  MiaoliCounty: '苗栗',
-  ChanghuaCounty: '彰化',
-  NantouCounty: '南投',
-  YunlinCounty: '雲林',
-  Chiayi: '嘉義',
-  PingtungCounty: '屏東',
-  YilanCounty: '宜蘭',
-  HualienCounty: '花蓮',
-  TaitungCounty: '臺東',
-  PenghuCounty: '澎湖',
-  KinmenCounty: '金門'
-}
+// export const cities = {
+//   Taipei: '台北 / 新北',
+//   Taoyuan: '桃園',
+//   Taichung: '台中',
+//   Tainan: '台南',
+//   Kaohsiung: '高雄',
+//   Hsinchu: '新竹',
+//   MiaoliCounty: '苗栗',
+//   ChanghuaCounty: '彰化',
+//   NantouCounty: '南投',
+//   YunlinCounty: '雲林',
+//   Chiayi: '嘉義',
+//   PingtungCounty: '屏東',
+//   YilanCounty: '宜蘭',
+//   HualienCounty: '花蓮',
+//   TaitungCounty: '臺東',
+//   PenghuCounty: '澎湖',
+//   KinmenCounty: '金門'
+// }
 
-const busRequest = axios.create({
-  baseURL: 'https://ptx.transportdata.tw/MOTC/v2/Bus',
-  headers: token
-})
+
+
 
 busRequest.interceptors.request.use(
   function (config) {
+    console.log(config)
     return config
   },
   function (error) {
