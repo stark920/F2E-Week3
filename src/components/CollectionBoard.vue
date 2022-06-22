@@ -2,7 +2,7 @@
 import { useI18n } from 'vue-i18n'
 import { useLikesStore } from '@/stores/likes'
 import { storeToRefs } from 'pinia'
-import RouteInfoCard from './RouteInfoCard.vue'
+import RouteListCard from './RouteListCard.vue'
 const { t } = useI18n()
 const likeStore = useLikesStore()
 const { likeRoutes } = storeToRefs(likeStore)
@@ -14,7 +14,7 @@ const { likeRoutes } = storeToRefs(likeStore)
       <h3 class="text-xl font-bold">{{ t('collections') }}</h3>
     </div>
     <div class="h-[calc(100%-3rem)] overflow-y-scroll px-2">
-      <RouteInfoCard
+      <RouteListCard
         v-for="rt in likeRoutes"
         :key="rt.uid"
         :uid="rt.uid"
@@ -24,7 +24,7 @@ const { likeRoutes } = storeToRefs(likeStore)
         :destination="rt.destination"
         :departure-en="rt.departureEn ?? ''"
         :destination-en="rt.destinationEn ?? ''"
-        :city="rt.city"></RouteInfoCard>
+        :city="rt.city"></RouteListCard>
     </div>
   </section>
 </template>

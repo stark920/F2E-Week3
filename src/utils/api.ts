@@ -1,6 +1,9 @@
 import axios from 'axios'
+import pick from './pick'
 import { useBusStore } from '@/stores/bus'
 const busStore = useBusStore()
+import {useToast} from 'vue-toastification'
+const toast = useToast()
 
 let token;
 (function() {
@@ -42,6 +45,17 @@ const busRequest = axios.create({
   headers: token
 })
 
+busRequest.interceptors.request.use(
+  function (config) {
+    toast.error('丟了')
+    return config
+  },
+  function (error) {
+    console.log(error)
+    return null
+  }
+);
+
 busRequest.interceptors.response.use(
   function (response) {
     return response
@@ -59,9 +73,9 @@ busRequest.interceptors.response.use(
 const getRoutesData = async () => {
   if (busStore.currentCity === 'Taipei') {
     const Taipei = busRequest.get(`/Route/City/Taipei?$format=JSON`)
-    const newTaipei = busRequest.get(`/Route/City/NewTaipei?$format=JSON`)
-    const responses = await Promise.all([Taipei, newTaipei])
-    responses ? responses.reduce((a, b) => a.data.concat(b.data)) : null
+    const NewTaipei = busRequest.get(`/Route/City/NewTaipei?$format=JSON`)
+    const responses = await Promise.all([Taipei, NewTaipei])
+    return responses ? responses.reduce((a, b) => a.data.concat(b.data)) : null
   }
   if (busStore.currentCity === 'Hsinchu') {
     const Hsinchu = busRequest.get(`/Route/City/Hsinchu?$format=JSON`)

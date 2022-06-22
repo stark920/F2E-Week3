@@ -1,15 +1,15 @@
 import { defineStore } from 'pinia'
 
-interface route{
-  uid?: string
-  name?: string
+interface route {
+  uid: string
+  name: string
   nameEn?: string
-  destination?: string
+  destination: string
   destinationEn?: string
-  departure?: string
+  departure: string
   departureEn?: string
-  city?: string
-}
+  city: string
+} 
 
 interface busStop {
   StopUID: string
@@ -30,7 +30,8 @@ export const useBusStore = defineStore({
     displayBoard: '',
     currentCity: '',
     currentRoute: {} as route,
-    currentStops: [] as busStop[]
+    currentStops: [] as busStop[],
+    mapView: []
   }),
   persist: true,
   actions: {

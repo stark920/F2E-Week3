@@ -23,8 +23,14 @@ const router = createRouter({
       path: '/stop',
       name: 'stop',
       component: () => import('../views/StopView.vue')
-    }
-  ]
+    },
+    {
+      path: '/close',
+      component: () => import('../views/CityView.vue')
+    },
+  ],
 })
+
+
 
 export default router

@@ -50,5 +50,18 @@
   "afterTime": "倒數",
   "second": "秒",
   "refreshAuto": "自動更新",
-  "refreshNow": "立即更新"
+  "refreshNow": "立即更新",
+  "buttonClean": "清除",
+  "buttonSmall": "小",
+  "buttonRed": "紅",
+  "buttonBlue": "藍",
+  "buttonGreen": "綠",
+  "buttonBrown": "棕",
+  "buttonOrange": "橘",
+  "buttonYellow": "黃",
+  "buttonMetro": "幹線",
+  "buttonF": "F",
+  "buttonL": "L",
+  "buttonJOY": "JOY",
+  "buttonExpress": "快線"
 }

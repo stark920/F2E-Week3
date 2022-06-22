@@ -6,7 +6,7 @@ import IconRefresh from './icons/IconRefresh.vue'
 import StopInfoCard from './StopInfoCard.vue'
 import { useI18n } from 'vue-i18n'
 import { busApi } from '@/utils/api'
-import { computed, onMounted, reactive, type ComputedRef } from 'vue'
+import { computed, onMounted, reactive, watch, type ComputedRef } from 'vue'
 import { useLangStore } from '@/stores/lang'
 import { useBusStore } from '@/stores/bus'
 import { useLikesStore } from '@/stores/likes'
@@ -62,6 +62,10 @@ const stopsData = reactive({
 })
 const currentStops: ComputedRef<busStop[]> = computed(() => {
   return stopsData.direction ? stopsData.forward : stopsData.backward
+})
+
+watch(currentStops, (newValue) => {
+  busStore.currentStops = newValue
 })
 
 const getRouteData = async () => {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import IconSearch from '@/components/icons/IconSearch.vue'
-import RouteInfoCard from './RouteInfoCard.vue'
+import RouteListCard from '@/components/RouteListCard.vue'
 import { useToast } from 'vue-toastification'
 import {
   watch,
@@ -26,110 +26,92 @@ const { currentCity } = storeToRefs(busStore)
 const buttons = {
   Taipei: [
     {
-      text: ['紅', '藍', '1', '2', '3'],
+      text: ['buttonRed', 'buttonBlue', 1, 2, 3],
       color: ['#E87E7E', '#3591C5']
     },
     {
-      text: ['綠', '棕', '4', '5', '6'],
+      text: ['buttonGreen', 'buttonBrown', 4, 5, 6],
       color: ['#5CC1A9', '#A86556']
     },
     {
-      text: ['橘', '黃', '7', '8', '9'],
+      text: ['buttonOrange', 'buttonSmall', 7, 8, 9],
       color: ['#EEA12E', '#DEBE4E']
     },
     {
-      text: ['F', '小', '其他', '0', '清除'],
-      color: ['#888888', '#888888', '#283C43']
+      text: ['buttonF', 'buttonMetro', 0, 'buttonClean'],
+      color: ['#888888', '#888888']
     }
   ],
   Taoyuan: [
     {
-      text: ['1', '2', '3'],
+      text: [1, 2, 3],
       color: []
     },
     {
-      text: ['4', '5', '6'],
+      text: [4, 5, 6],
       color: []
     },
     {
-      text: ['7', '8', '9'],
+      text: [7, 8, 9],
       color: []
     },
     {
-      text: ['L', '0', '清除'],
+      text: ['buttonL', 0, 'buttonClean'],
       color: ['#DEBE4E']
-    }
-  ],
-  Taichung: [
-    {
-      text: ['1', '2', '3'],
-      color: []
-    },
-    {
-      text: ['4', '5', '6'],
-      color: []
-    },
-    {
-      text: ['7', '8', '9'],
-      color: []
-    },
-    {
-      text: ['專用道', '0', '清除'],
-      color: ['#283C43']
     }
   ],
   Tainan: [
     {
-      text: ['紅', '藍', '1', '2', '3'],
+      text: ['buttonRed', 'buttonBlue', 1, 2, 3],
       color: ['#E87E7E', '#3591C5']
     },
     {
-      text: ['綠', '棕', '4', '5', '6'],
+      text: ['buttonGreen', 'buttonBrown', 4, 5, 6],
       color: ['#5CC1A9', '#A86556']
     },
     {
-      text: ['橘', '黃', '7', '8', '9'],
+      text: ['buttonOrange', 'buttonYellow', 7, 8, 9],
       color: ['#EEA12E', '#DEBE4E']
     },
     {
-      text: ['高鐵', '其他', '0', '清除'],
-      color: ['#EEA12E', '#888888']
+      text: [0, 'buttonClean'],
+      color: []
     }
   ],
   Kaohsiung: [
     {
-      text: ['紅', 'JOY', '1', '2', '3'],
-      color: ['#E87E7E', '#283C43']
+      text: ['buttonRed', 1, 2, 3],
+      color: ['#E87E7E']
     },
     {
-      text: ['橘', '幹線', '4', '5', '6'],
-      color: ['#EEA12E', '#283C43']
+      text: ['buttonOrange', 4, 5, 6],
+      color: ['#EEA12E']
     },
     {
-      text: ['黃', '快線', '7', '8', '9'],
-      color: ['#DEBE4E', '#283C43']
+      text: ['buttonYellow', 7, 8, 9],
+      color: ['#DEBE4E']
     },
     {
-      text: ['其他', '0', '清除'],
-      color: ['#888888']
+      text: ['buttonJOY', 'buttonExpress', 0, 'buttonClean'],
+      color: ['#283C43', '#283C43']
     }
   ],
   Other: [
     {
-      text: ['1', '2', '3'],
+      text: [1, 2, 3],
       color: []
     },
     {
-      text: ['4', '5', '6'],
+      text: [4, 5, 6],
       color: []
     },
     {
-      text: ['7', '8', '9'],
+      text: [7, 8, 9],
       color: []
     },
     {
-      text: ['其他', '0', '清除'],
-      color: ['#888888']
+      text: [0, 'buttonClean'],
+      color: []
     }
   ]
 }
@@ -143,19 +125,13 @@ const filter = reactive({
       ? buttons[city]
       : buttons.Other
   }),
-  changeKey(text: string) {
-    if (text === '清除') {
+  changeKey(text: string | number) {
+    if (text === '清除' || text === 'Clean') {
       this.keyParamFirst = ''
       this.keyParamLast = ''
-    } else if (text === '其他') {
-      this.keyParamFirst = '其他'
-      this.keyParamLast = ''
     } else if (isNaN(Number(text))) {
-      this.keyParamFirst = text
+      this.keyParamFirst = text.toString()
     } else {
-      if (this.keyParamFirst === '其他') {
-        this.keyParamFirst = ''
-      }
       this.keyParamLast += text
     }
     this.keyWord = this.keyParamFirst + this.keyParamLast
@@ -230,7 +206,7 @@ const getRoutesData = async () => {
 
 const checkRoutesData = () => {
   const city = currentCity.value as keyof typeof routesOriginData
-  console.log(routesOriginData[city])
+
   if (routesOriginData[city].length > 0) {
     routesCurrentCity.value = routesOriginData[city]
     return
@@ -281,7 +257,7 @@ watch(currentCity, () => {
     </div>
 
     <div class="h-[calc(100%-22rem)] overflow-y-scroll bg-white px-4 pb-4">
-      <RouteInfoCard
+      <RouteListCard
         v-for="rt in routesDisplay"
         :key="rt.RouteUID"
         :uid="rt.RouteUID"
@@ -289,24 +265,28 @@ watch(currentCity, () => {
         :name-en="rt.RouteName.En"
         :departure="rt.DepartureStopNameZh"
         :destination="rt.DestinationStopNameZh"
-        :departure-en="rt.DepartureStopNameEn"
-        :destination-en="rt.DestinationStopNameEn"
-        :city="rt.City"></RouteInfoCard>
+        :departure-en="rt.DepartureStopNameEn ?? ''"
+        :destination-en="rt.DestinationStopNameEn ?? ''"
+        :city="rt.City"></RouteListCard>
     </div>
 
-    <div class="flex-c h-[18rem] flex-col bg-gray-100 p-4">
+    <div class="flex-c h-[16rem] flex-col bg-gray-100 p-4">
       <ul
         v-for="(data, row) of filter.keyboard"
         :key="row"
         class="mb-2 flex w-full gap-2 last:mb-0">
         <li
-          v-for="(el, index) of data.text"
+          v-for="(text, index) of data.text"
           :key="index"
           :style="`background-color: ${data.color[index] ?? '#D5D5D5'}`"
           :class="{ 'text-white': data.color[index] }"
-          class="flex-1 cursor-pointer rounded-lg p-4 text-center hover:brightness-110"
-          @click="filter.changeKey(el)">
-          {{ el }}
+          class="flex-1 cursor-pointer rounded-lg py-3 text-center hover:ring-1 hover:ring-gray-700 hover:brightness-110"
+          @click="
+            filter.changeKey(
+              typeof text === 'string' ? t(text) : text.toString()
+            )
+          ">
+          {{ typeof text === 'string' ? t(text) : text.toString() }}
         </li>
       </ul>
     </div>

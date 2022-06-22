@@ -10,6 +10,23 @@
   }
 }
 
+@layer components {
+  .leaflet-popup-custom-arrival .leaflet-popup-content-wrapper,
+  .leaflet-popup-custom-arrival .leaflet-popup-tip {
+    @apply bg-secondary text-center text-white;
+  }
+  .leaflet-popup-custom-default .leaflet-popup-content-wrapper,
+  .leaflet-popup-custom-default .leaflet-popup-tip {
+    @apply bg-primary text-center text-white;
+  }
+  .leaflet-popup-custom-arrival .leaflet-popup-content-wrapper,
+  .leaflet-popup-custom-arrival .leaflet-popup-tip,
+  .leaflet-popup-custom-default .leaflet-popup-content-wrapper,
+  .leaflet-popup-custom-default .leaflet-popup-tip {
+    box-shadow: 0px 0px 2px 2px #fff, 0 3px 14px rgb(0 0 0 / 60%);
+  }
+}
+
 @layer utilities {
   .flex-c {
     @apply flex items-center justify-center;

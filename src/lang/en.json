@@ -50,5 +50,18 @@
   "afterTime": "after",
   "second": "second",
   "refreshAuto": "Auto Refresh",
-  "refreshNow": "Refresh now"
+  "refreshNow": "Refresh now",
+  "buttonClean": "Clean",
+  "buttonSmall": "S",
+  "buttonRed": "R",
+  "buttonBlue": "B",
+  "buttonGreen": "G",
+  "buttonBrown": "BR",
+  "buttonOrange": "O",
+  "buttonYellow": "Y",
+  "buttonMetro": "Metro",
+  "buttonF": "F",
+  "buttonL": "L",
+  "buttonJOY": "Medical",
+  "buttonExpress": "Express"
 }

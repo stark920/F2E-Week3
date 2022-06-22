@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import StationMap from '@/components/StationMap.vue'
+import BusMap from '@/components/BusMap.vue'
 import CitySelect from '@/components/CitySelect.vue'
 import CitySelectFullScreen from '@/components/CitySelectFullScreen.vue'
 import CitySearchBoard from '@/components/CitySearchBoard.vue'
@@ -25,7 +25,7 @@ const boards = { CitySearchBoard, RouteDetailBoard, CollectionBoard }
       </aside>
 
       <div class="flex-grow">
-        <StationMap></StationMap>
+        <BusMap></BusMap>
       </div>
     </div>
   </section>
