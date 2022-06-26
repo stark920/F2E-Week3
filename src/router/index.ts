@@ -10,27 +10,44 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/nearby',
-      name: 'nearby',
-      component: () => import('../views/NearbyView.vue')
-    },
-    {
-      path: '/city',
-      name: 'city',
-      component: () => import('../views/CityView.vue')
-    },
-    {
-      path: '/stop',
-      name: 'stop',
-      component: () => import('../views/StopView.vue')
-    },
-    {
-      path: '/close',
-      component: () => import('../views/CityView.vue')
-    },
+      path: '/',
+      component: () => import('../views/MapView.vue'),
+      children: [
+        {
+          path: '/nearby',
+          name: 'nearby',
+          components: {
+            main: () => import('../views/NearbyBoard.vue'),
+            nav: () => import('../views/NearbyNav.vue'),
+          }
+        },
+        {
+          path: '/city',
+          name: 'city',
+          components: {
+            main: () => import('../views/CityBoard.vue'),
+            nav: () => import('../views/CityNav.vue')
+          }
+        },
+        {
+          path: '/stop',
+          name: 'stop',
+          components: {
+            main: () => import('../views/StopBoard.vue'),
+            nav: () => import('../views/CityNav.vue')
+          }
+        },
+        {
+          path: '/collect',
+          name: 'collect',
+          components: {
+            main: () => import('../views/CollectBoard.vue'),
+            nav: () => import('../views/CollectNav.vue')
+          }
+        },
+      ]
+    }
   ],
 })
-
-
 
 export default router

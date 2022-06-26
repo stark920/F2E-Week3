@@ -11,24 +11,49 @@
 }
 
 @layer components {
+  .leaflet-popup-custom .leaflet-popup-content-wrapper,
+  .leaflet-popup-custom .leaflet-popup-tip {
+    @apply text-center text-white;
+    box-shadow: 0px 0px 2px 2px #fff, 0 3px 14px rgb(0 0 0 / 60%);
+  }
   .leaflet-popup-custom-arrival .leaflet-popup-content-wrapper,
   .leaflet-popup-custom-arrival .leaflet-popup-tip {
-    @apply bg-secondary text-center text-white;
+    @apply bg-secondary;
   }
   .leaflet-popup-custom-default .leaflet-popup-content-wrapper,
   .leaflet-popup-custom-default .leaflet-popup-tip {
-    @apply bg-primary text-center text-white;
+    @apply bg-primary;
   }
-  .leaflet-popup-custom-arrival .leaflet-popup-content-wrapper,
-  .leaflet-popup-custom-arrival .leaflet-popup-tip,
-  .leaflet-popup-custom-default .leaflet-popup-content-wrapper,
-  .leaflet-popup-custom-default .leaflet-popup-tip {
-    box-shadow: 0px 0px 2px 2px #fff, 0 3px 14px rgb(0 0 0 / 60%);
+  .leaflet-popup-custom-null .leaflet-popup-content-wrapper,
+  .leaflet-popup-custom-null .leaflet-popup-tip {
+    @apply bg-gray-400;
+  }
+  .leaflet-popup-custom-focus .leaflet-popup-content-wrapper,
+  .leaflet-popup-custom-focus .leaflet-popup-tip {
+    @apply bg-green;
+  }
+  .leaflet-popup-custom .leaflet-popup-close-button {
+    @apply text-gray-200 hover:text-gray-300;
+  }
+  .leaflet-popup-custom .leaflet-popup-content {
+    @apply mx-2 my-1;
   }
 }
 
 @layer utilities {
   .flex-c {
     @apply flex items-center justify-center;
+  }
+
+  .process-line {
+    animation: 30s width0-100 linear infinite;
+  }
+  @keyframes width0-100 {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
   }
 }

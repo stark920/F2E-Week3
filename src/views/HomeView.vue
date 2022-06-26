@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import IconBus from '@/components/icons/IconBus.vue'
-import { useRouter } from 'vue-router'
-import { useBusStore } from '@/stores/bus'
+
+import { RouterLink } from 'vue-router'
 import { useLangStore } from '@/stores/lang'
 import { storeToRefs } from 'pinia'
-const router = useRouter()
-const busStore = useBusStore()
+
 const langStore = useLangStore()
 const { lang } = storeToRefs(langStore)
 
@@ -47,12 +46,6 @@ const cities = [
     color: 'dark-green'
   }
 ]
-
-const toCityPage = (value: string) => {
-  busStore.displayBoard = 'CitySearchBoard'
-  busStore.currentCity = value
-  router.push({ name: 'city' })
-}
 </script>
 
 <template>
@@ -71,17 +64,18 @@ const toCityPage = (value: string) => {
         <p class="text-2xl font-bold tracking-[0.6rem]">時刻查詢系統</p>
       </div>
     </section>
+
     <section class="grid w-full grid-cols-2 gap-4 px-4 lg:grid-cols-6">
-      <div
+      <RouterLink
         v-for="(city, index) of cities"
         :key="index"
+        :to="{ name: 'city', query: { city: city.value } }"
         :class="`text-${city.color} ring-${city.color}`"
-        class="flex-c flex-1 cursor-pointer flex-col rounded-lg bg-white p-6 duration-200 hover:ring-2 active:ring-2 lg:aspect-square"
-        @click="toCityPage(city.value)">
+        class="flex-c flex-1 cursor-pointer flex-col whitespace-pre rounded-lg bg-white p-6 duration-200 hover:ring-2 active:ring-2 lg:aspect-square">
         <IconBus :class="`text-${city.color} ring-${city.color}`"></IconBus>
         <p>{{ lang === 'zh-TW' ? city.ch : city.en }}</p>
         <small>{{ lang === 'zh-TW' ? city.en : city.ch }}</small>
-      </div>
+      </RouterLink>
     </section>
   </div>
 </template>

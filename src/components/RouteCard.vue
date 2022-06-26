@@ -1,51 +1,46 @@
 <script setup lang="ts">
 import IconHeart from './icons/IconHeart.vue'
 import IconHeartFill from './icons/IconHeartFill.vue'
+
+import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
 import { useLikesStore } from '@/stores/likes'
-import { useBusStore } from '@/stores/bus'
 import { useLangStore } from '@/stores/lang'
-import { useI18n } from 'vue-i18n'
+
+import type { routeList } from '@/types/interface'
+
 const likeStore = useLikesStore()
-const busStore = useBusStore()
 const langStore = useLangStore()
 const { likeRoutes } = storeToRefs(likeStore)
 const { lang } = storeToRefs(langStore)
 const { t } = useI18n()
 
-const props = defineProps<{
-  uid: string
-  name: string
-  nameEn: string
-  destination: string
-  destinationEn: string
-  departure: string
-  departureEn: string
-  city: string
+defineProps<{
+  data: routeList
 }>()
 
-const toggleLike = () => {
-  const data = { ...props }
-  likeStore.toggleLikeRoutes(data)
-}
-
-const changeView = () => {
-  busStore.currentRoute = { ...props }
-  busStore.displayBoard = 'RouteDetailBoard'
-}
+defineEmits(['displayDetail'])
 </script>
 
 <template>
   <div
     class="cursor-pointer rounded-t-lg border-b-[1px] border-gray-300 p-4 pb-2 hover:bg-gray-100"
-    @click="changeView">
+    @click="$emit('displayDetail', data.City, data.RouteName.Zh_tw)">
     <div class="mb-2 flex items-center justify-between">
       <div class="text-lg font-bold">
-        {{ lang === 'zh-TW' ? name : nameEn }}
+        {{
+          lang === 'zh-TW'
+            ? data.RouteName.Zh_tw
+            : data.RouteName.En ?? data.RouteName.Zh_tw
+        }}
       </div>
-      <div class="cursor-pointer" @click.stop="toggleLike">
+      <div
+        class="cursor-pointer"
+        @click.stop="likeStore.toggleLikeRoutes(data)">
         <IconHeartFill
-          v-if="likeRoutes.findIndex((el) => el.uid === uid) >= 0"
+          v-if="
+            likeRoutes.findIndex((el) => el.RouteUID === data.RouteUID) >= 0
+          "
           class="h-5 w-5 text-secondary"></IconHeartFill>
         <IconHeart v-else class="h-5 w-5"></IconHeart>
       </div>
@@ -54,11 +49,11 @@ const changeView = () => {
       <div class="text-gray-600">
         {{
           lang === 'zh-TW'
-            ? `${departure} - ${destination}`
-            : `${departureEn} - ${destinationEn}`
+            ? `${data.DepartureStopNameZh} - ${data.DestinationStopNameZh}`
+            : `${data.DepartureStopNameEn} - ${data.DestinationStopNameEn}`
         }}
       </div>
-      <div>{{ t(city) }}</div>
+      <div>{{ t(`city.${data.City}`) }}</div>
     </div>
   </div>
 </template>

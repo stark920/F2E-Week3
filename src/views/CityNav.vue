@@ -5,7 +5,7 @@ import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
 const { t } = useI18n()
 const busStore = useBusStore()
-const { currentCity, displayBoard } = storeToRefs(busStore)
+const { currentCity } = storeToRefs(busStore)
 const selections = [
   'Taipei',
   'Taoyuan',
@@ -25,25 +25,35 @@ const selections = [
   'PenghuCounty',
   'KinmenCounty'
 ]
-const changeView = () => {
-  if (displayBoard.value !== 'CitySearchBoard') {
-    displayBoard.value = 'CitySearchBoard'
-  }
-}
 </script>
 
 <template>
-  <section class="flex h-full items-center justify-between px-4">
-    <div>
-      <span>{{ t('selectCity') }}：</span>
+  <div
+    v-if="busStore.currentCity === ''"
+    class="flex-c absolute top-0 left-0 z-[1000] h-full w-full bg-[#00000050]">
+    <div class="rounded bg-white p-8">
+      <span>{{ t('select.City') }}：</span>
       <select
         id="city"
         v-model="currentCity"
         name="city"
-        class="rounded-lg border-none bg-transparent text-center focus:ring-0"
-        @change="changeView">
+        class="rounded-lg border-none bg-transparent">
         <option v-for="city in selections" :key="city" :value="city">
-          {{ t(`select${city}`) }}
+          {{ t(`select.${city}`) }}
+        </option>
+      </select>
+    </div>
+  </div>
+  <section v-else class="flex h-full items-center justify-between px-4">
+    <div>
+      <span>{{ t('select.City') }}：</span>
+      <select
+        id="city"
+        v-model="currentCity"
+        name="city"
+        class="rounded-lg border-none bg-transparent text-center focus:ring-0">
+        <option v-for="city in selections" :key="city" :value="city">
+          {{ t(`select.${city}`) }}
         </option>
       </select>
     </div>
