@@ -1,1 +1,0 @@
-import{_ as s}from"./BreadCrumb.51527ed6.js";import{d as n,x as o,b as r,z as p,E as _,f as c,t as e,h as t}from"./index.824b33fc.js";import"./IconInfo.e51f1a75.js";const h=n({__name:"NearbyNav",setup(i){const{t:a}=o();return(m,f)=>(r(),p(s,null,{default:_(()=>[c("div",null,e(t(a)("page.home"))+" / "+e(t(a)("page.nearby")),1)]),_:1}))}});export{h as default};

@@ -1,0 +1,1 @@
+import{_ as s}from"./BreadCrumb.bcab92f8.js";import{d as o,j as n,b as c,x as r,E as l,f as _,t as a,h as t}from"./index.0232cb1e.js";const d=o({__name:"CollectNav",setup(p){const{t:e}=n();return(f,i)=>(c(),r(s,null,{default:l(()=>[_("div",null,a(t(e)("page.home"))+" / "+a(t(e)("page.collect")),1)]),_:1}))}});export{d as default};
