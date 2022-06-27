@@ -4,10 +4,9 @@
   "en": "English",
   "page": {
     "home": "Home",
-    "nearby": "Nearby",
-    "city": "Cities",
-    "stop": "Stops",
-    "collect": "Collections"
+    "nearby": "Nearby Stops",
+    "city": "City Routes",
+    "collect": "My Collections"
   },
   "select": {
     "City": "City",

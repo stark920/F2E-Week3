@@ -30,14 +30,6 @@ const router = createRouter({
           }
         },
         {
-          path: '/stop',
-          name: 'stop',
-          components: {
-            main: () => import('../views/StopBoard.vue'),
-            nav: () => import('../views/CityNav.vue')
-          }
-        },
-        {
           path: '/collect',
           name: 'collect',
           components: {

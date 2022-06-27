@@ -99,25 +99,36 @@ const detailRefresher = reactive({
 })
 
 onMounted(() => {
-  if ('geolocation' in navigator) {
-    navigator.geolocation.getCurrentPosition((pos) => {
-      const lat = pos.coords.latitude
-      const lon = pos.coords.longitude
-      if (lat && lon) mapStore.changeUserPosition(lat, lon)
-    })
+  if (!navigator.geolocation) {
+    return toast.error('您的瀏覽器未支援定位功能')
   }
+
+  function success(position: {
+    coords: { latitude: number; longitude: number }
+  }) {
+    const lat = position.coords.latitude
+    const lng = position.coords.longitude
+    mapStore.changeUserPosition(lat, lng)
+  }
+
+  function error() {
+    mapStore.updateNearByStation([])
+    toast.error('無法取得您的定位資訊')
+  }
+
+  navigator.geolocation.getCurrentPosition(success, error)
 })
 
-watch(userPosition, async (newValue) => {
-  if (newValue) {
-    const data = await busApi.getNearbyStation(newValue[0], newValue[1])
+watch(userPosition, async (newPosition) => {
+  if (newPosition) {
+    const data = await busApi.getNearbyStation(newPosition[0], newPosition[1])
     if (data) mapStore.updateNearByStation(data)
   }
 })
 </script>
 
 <template>
-  <section v-if="!userPosition" class="flex-c h-full text-gray-400">
+  <section v-if="!nearbyStation" class="flex-c h-full text-gray-400">
     <IconGlobe class="mr-2 h-6 w-6 animate-spin"></IconGlobe>
     {{
       lang === 'zh-TW' ? '正在取得您的位置資訊...' : 'Getting your location...'

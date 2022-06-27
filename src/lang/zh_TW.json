@@ -4,9 +4,8 @@
   "en": "English",
   "page": {
     "home": "首頁",
-    "nearby": "附近站牌",
-    "city": "市區查詢",
-    "stop": "站點查詢",
+    "nearby": "附近站牌查詢",
+    "city": "市區路線查詢",
     "collect": "我的收藏"
   },
   "select": {

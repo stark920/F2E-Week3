@@ -44,13 +44,6 @@ const displayMobileMenu = ref(false)
           </li>
           <li>
             <RouterLink
-              to="/stop"
-              class="hidden p-4 hover:bg-gray-100 lg:inline-block">
-              {{ t('page.stop') }}
-            </RouterLink>
-          </li>
-          <li>
-            <RouterLink
               to="/collect"
               class="hidden p-4 hover:bg-gray-100 lg:inline-block">
               {{ t('page.collect') }}
@@ -92,11 +85,6 @@ const displayMobileMenu = ref(false)
           <li class="border-t-[1px] border-gray-300">
             <RouterLink to="/city" class="block p-4 hover:bg-gray-100">
               {{ t('page.city') }}
-            </RouterLink>
-          </li>
-          <li class="border-t-[1px] border-gray-300">
-            <RouterLink to="/stop" class="block p-4 hover:bg-gray-100">
-              {{ t('page.stop') }}
             </RouterLink>
           </li>
           <li class="border-y-[1px] border-gray-300">

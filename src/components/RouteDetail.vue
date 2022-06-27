@@ -66,7 +66,11 @@ const showRoutes = reactive({
       default:
         return []
     }
-  })
+  }),
+  changeDirection(direction: number) {
+    this.currentDirection = direction
+    createMapRouteData()
+  }
 })
 
 function timeToText(time: number, nextBus?: string) {
@@ -154,7 +158,7 @@ onBeforeUnmount(() => {
     <label
       v-if="data.go.length > 0"
       class="flex-grow"
-      @change="showRoutes.currentDirection = 0">
+      @change="showRoutes.changeDirection(0)">
       <input type="radio" name="direction" class="peer hidden" checked />
       <div
         class="cursor-pointer rounded-t-md bg-gray-300 py-2 text-center peer-checked:bg-primary peer-checked:text-white">
@@ -171,7 +175,7 @@ onBeforeUnmount(() => {
     <label
       v-if="data.back.length > 0"
       class="flex-grow"
-      @change="showRoutes.currentDirection = 1">
+      @change="showRoutes.changeDirection(1)">
       <input type="radio" name="direction" class="peer hidden" />
       <div
         class="cursor-pointer rounded-t-md bg-gray-300 py-2 text-center peer-checked:bg-primary peer-checked:text-white">
@@ -188,7 +192,7 @@ onBeforeUnmount(() => {
     <label
       v-if="data.circle.length > 0"
       class="flex-grow"
-      @change="showRoutes.currentDirection = 2">
+      @change="showRoutes.changeDirection(2)">
       <input type="radio" name="direction" class="peer hidden" checked />
       <div
         class="cursor-pointer rounded-t-md bg-gray-300 py-2 text-center peer-checked:bg-primary peer-checked:text-white">

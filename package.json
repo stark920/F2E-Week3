@@ -15,6 +15,7 @@
     "pinia": "^2.0.14",
     "pinia-plugin-persistedstate": "^1.6.1",
     "vue": "^3.2.36",
+    "vue-easy-lightbox": "^1.4.1",
     "vue-i18n": "^9.1.10",
     "vue-router": "^4.0.15",
     "vue-toastification": "^2.0.0-rc.5"

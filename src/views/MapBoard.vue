@@ -1,18 +1,21 @@
 <script setup lang="ts">
 import 'leaflet/dist/leaflet.css'
-import L from 'leaflet'
+import L, { map } from 'leaflet'
 
 import positionIcon from '@/assets/position.png'
 import busStopIcon from '@/assets/busStop.png'
 import busArrivingIcon from '@/assets/busArriving.png'
 import busFocusIcon from '@/assets/busFOcus.png'
+import gpsIcon from '@/assets/gps.png'
 
-import { onMounted, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
+import { useToast } from 'vue-toastification'
 import { useMapStore } from '@/stores/map'
 import { useLangStore } from '@/stores/lang'
 import type { mapRouteLine } from '@/types/interface'
 
+const toast = useToast()
 const mapStore = useMapStore()
 const langStore = useLangStore()
 const { userPosition, viewPosition, nearbyStation, focusStopIndex, routeLine } =
@@ -54,28 +57,69 @@ const mapSettings = {
   }
 }
 
+const loadingLocation = ref(false)
+
 const mapData = {
   map: null as L.Map | null,
   mapRouteLine: null as L.Polyline | null,
   mapMarkers: [] as L.Marker[],
+  locateMarker: null as L.Marker | null,
   mapMarkerGroup: null as L.LayerGroup | null,
+  isGettingLocation: false,
   initMap() {
-    let position = [23.4, 120.9]
-    let zoom = 8
-    if (viewPosition.value) {
-      position = viewPosition.value
-      zoom = 12
-    }
     this.map = L.map('busMap', {
       zoomControl: false,
       closePopupOnClick: false
-    }).setView(position as unknown as L.LatLng, zoom)
+    }).setView([23.4, 120.9], 8)
+
+    this.map.on('locationfound', (e) => {
+      mapStore.changeUserPosition(e.latlng.lat, e.latlng.lng)
+      loadingLocation.value = false
+    })
+
+    this.map.on('locationerror', () => {
+      toast.error('無法取得您的位置資訊，請確認開啟裝置定位和授權位置資訊')
+      loadingLocation.value = false
+    })
+    // 底圖
     L.tileLayer(mapSettings.mapUrl, mapSettings.mapOptions).addTo(this.map)
+    // 縮放按鈕
     L.control
       .zoom({
         position: 'bottomright'
       })
       .addTo(this.map)
+    // 定位按鈕
+    const LocateButton = L.Control.extend({
+      onAdd() {
+        const container = L.DomUtil.create(
+          'div',
+          'bg-white flex-c hover:bg-gray-300'
+        )
+        const img = L.DomUtil.create('img', 'w-5 h-5', container)
+        img.src = gpsIcon
+        container.style.border = '2px solid rgba(0,0,0,0.3)'
+        container.style.width = '34px'
+        container.style.height = '34px'
+        container.style.borderRadius = '4px'
+        container.style.cursor = 'pointer'
+        container.onclick = () => {
+          if (mapData.map) {
+            mapData.map.locate({
+              setView: true,
+              watch: false,
+              enableHighAccuracy: true,
+              timeout: 10000
+            })
+            loadingLocation.value = true
+          }
+        }
+        return container
+      }
+    })
+    new LocateButton({
+      position: 'bottomright'
+    }).addTo(this.map)
   },
   cleanLayers() {
     if (this.map) {
@@ -147,8 +191,13 @@ watch(routeLine, (newValue) => {
 // setView to user location
 watch(userPosition, (newPosition) => {
   if (newPosition && mapData.map) {
+    if (mapData.locateMarker) {
+      mapData.map.removeLayer(mapData.locateMarker)
+    }
     const position = newPosition as unknown as L.LatLng
-    L.marker(position, { icon: mapSettings.myLocationIcon }).addTo(mapData.map)
+    mapData.locateMarker = L.marker(position, {
+      icon: mapSettings.myLocationIcon
+    }).addTo(mapData.map)
     mapData.map.flyTo(position, 16)
   }
 })
@@ -230,5 +279,11 @@ onMounted(() => {
 </script>
 
 <template>
+  <div
+    v-show="loadingLocation"
+    class="absolute top-1/2 left-1/2 z-[1000] -translate-y-1/2 -translate-x-1/2 rounded-md border-[1px] border-gray-200 bg-white px-4 py-2">
+    取得定位資訊中...
+  </div>
+
   <div id="busMap" class="h-full w-full"></div>
 </template>

@@ -2,6 +2,7 @@
 import IconHeart from './icons/IconHeart.vue'
 import IconHeartFill from './icons/IconHeartFill.vue'
 import IconMap from './icons/IconMap.vue'
+import VueEasyLightbox from 'vue-easy-lightbox'
 
 import { useI18n } from 'vue-i18n'
 import { storeToRefs } from 'pinia'
@@ -9,6 +10,7 @@ import { useLangStore } from '@/stores/lang'
 import { useLikesStore } from '@/stores/likes'
 
 import type { nearbyStopOfRoute } from '@/types/interface'
+import { ref } from 'vue'
 
 const langStore = useLangStore()
 const likesStore = useLikesStore()
@@ -52,6 +54,8 @@ function timeToStyle(time?: number) {
     return 'bg-primary'
   }
 }
+
+const showLightBox = ref(false)
 </script>
 
 <template>
@@ -70,12 +74,9 @@ function timeToStyle(time?: number) {
               ? data.RouteName.Zh_tw
               : data.RouteName.En ?? data.RouteName.Zh_tw
           }}</span>
-          <a
-            :href="data.RouteMapImageUrl"
-            alt="Route Map Image"
-            target="_blank">
-            <IconMap class="mx-1 h-5 w-5"></IconMap>
-          </a>
+          <IconMap
+            class="mx-1 h-5 w-5 cursor-pointer"
+            @click="showLightBox = true"></IconMap>
         </div>
         <div class="cursor-pointer" @click="likesStore.toggleLikeStops(data)">
           <IconHeartFill
@@ -111,4 +112,11 @@ function timeToStyle(time?: number) {
       </div>
     </div>
   </div>
+  <vue-easy-lightbox
+    scroll-disabled
+    esc-disabled
+    move-disabled
+    :visible="showLightBox"
+    :imgs="data.RouteMapImageUrl"
+    @hide="showLightBox = false"></vue-easy-lightbox>
 </template>

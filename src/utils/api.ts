@@ -1,6 +1,6 @@
 import axios from 'axios'
 import pick from './pick'
-import type { nearbyStopOfRoute, nearbyStation, routeList, stopsOfRoute } from '@/types/interface'
+import type { nearbyStopOfRoute, nearbyStation, routeList, busStop } from '@/types/interface'
 
 const busRequest = axios.create()
 
@@ -38,14 +38,14 @@ const getToken = async() => {
   return `${data.token_type} ${data.access_token}`
 }
 
-busRequest.defaults.headers.common['Authorization'] = await getToken()
-
 busRequest.interceptors.request.use(
   async function (config) {
     if (!config.headers?.Authorization) {
+      const token = await getToken()
+      busRequest.defaults.headers.common['Authorization'] = token
       config.headers = {
         ...config.headers,
-        Authorization: await getToken()
+        Authorization: token
       }
     }
     return config
@@ -332,7 +332,7 @@ const concatTwoRoutes = async (city1: string, city2: string) => {
  * 
  * @param city (城市的完整英文名稱，不是縮寫的 CityCode)
  * @param routeName (路線的中文名稱，不是 ID 或 UID)
- * @returns null || stopsOfRoute[]
+ * @returns null || busStop[]
  */
 const getRouteWithArrivalTime = async (city: string, routeName: string) => {
   const url = 'https://ptx.transportdata.tw/MOTC/v2/Bus'
@@ -346,31 +346,31 @@ const getRouteWithArrivalTime = async (city: string, routeName: string) => {
 
     if (!responses[0] || !responses[1]) return null
 
-    const allRoutes = responses[0].data.filter((el: stopsOfRoute) => el.RouteName.Zh_tw === routeName)
-    const allTimes = responses[1].data.filter((el: stopsOfRoute) => el.RouteName.Zh_tw === routeName)
+    const allRoutes = responses[0].data.filter((el: busStop) => el.RouteName.Zh_tw === routeName)
+    const allTimes = responses[1].data.filter((el: busStop) => el.RouteName.Zh_tw === routeName)
 
     const stops = {
-      go: allRoutes.filter((el: stopsOfRoute) => el.Direction === 0)[0]?.Stops ?? [],
-      back: allRoutes.filter((el: stopsOfRoute) => el.Direction === 1)[0]?.Stops ?? [],
-      circle: allRoutes.filter((el: stopsOfRoute) => el.Direction === 2)[0]?.Stops ?? []
+      go: allRoutes.filter((el: busStop) => el.Direction === 0)[0]?.Stops ?? [],
+      back: allRoutes.filter((el: busStop) => el.Direction === 1)[0]?.Stops ?? [],
+      circle: allRoutes.filter((el: busStop) => el.Direction === 2)[0]?.Stops ?? []
     }
     const times = {
-      go: allTimes.filter((el: stopsOfRoute) => el.Direction === 0),
-      back: allTimes.filter((el: stopsOfRoute) => el.Direction === 1),
-      circle: allTimes.filter((el: stopsOfRoute) => el.Direction === 2)
+      go: allTimes.filter((el: busStop) => el.Direction === 0),
+      back: allTimes.filter((el: busStop) => el.Direction === 1),
+      circle: allTimes.filter((el: busStop) => el.Direction === 2)
     }
 
     const mixData = {
-      go: stops.go.length > 0 ? stops.go.map((stop: stopsOfRoute) => {
-        const time = times.go.find((el: stopsOfRoute) => el.StopUID === stop.StopUID)
+      go: stops.go.length > 0 ? stops.go.map((stop: busStop) => {
+        const time = times.go.find((el: busStop) => el.StopUID === stop.StopUID)
         return {...stop, ...time}
       }) : [],
-      back: stops.back.length > 0 ? stops.back.map((stop: stopsOfRoute) => {
-        const time = times.back.find((el: stopsOfRoute) => el.StopUID === stop.StopUID)
+      back: stops.back.length > 0 ? stops.back.map((stop: busStop) => {
+        const time = times.back.find((el: busStop) => el.StopUID === stop.StopUID)
         return {...stop, ...time}
       }) : [],
-      circle: stops.circle.length > 0 ? stops.circle.map((stop: stopsOfRoute) => {
-        const time = times.circle.find((el: stopsOfRoute) => el.StopUID === stop.StopUID)
+      circle: stops.circle.length > 0 ? stops.circle.map((stop: busStop) => {
+        const time = times.circle.find((el: busStop) => el.StopUID === stop.StopUID)
         return {...stop, ...time}
       }) : []
     }

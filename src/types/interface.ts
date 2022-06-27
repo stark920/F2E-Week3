@@ -48,6 +48,10 @@ export interface routeList {
 }
 
 export interface busStop{
+  RouteName: {
+    Zh_tw: string,
+    En?: string
+  }
   Direction: number
   EstimateTime?: number
   NextBusTime?: string
@@ -76,34 +80,3 @@ export interface mapRouteLine{
     PositionLat: number, 
   }
 }
-
-// export interface stopsOfRoute {
-//   RouteUID: string
-//   RouteName: {
-//     Zh_tw: string
-//   }
-//   DepartureStopNameZh: string
-//   DestinationStopNameZh: string
-//   Direction: number
-//   Stops: busStop[]
-// }
-
-// export interface cityRoutes {
-//   Taipei: routeList[]
-//   Taoyuan: routeList[]
-//   Taichung: routeList[]
-//   Tainan: routeList[]
-//   Kaohsiung: routeList[]
-//   Hsinchu: routeList[]
-//   MiaoliCounty: routeList[]
-//   ChanghuaCounty: routeList[]
-//   NantouCounty: routeList[]
-//   YunlinCounty: routeList[]
-//   Chiayi: routeList[]
-//   PingtungCounty: routeList[]
-//   YilanCounty: routeList[]
-//   HualienCounty: routeList[]
-//   TaitungCounty: routeList[]
-//   PenghuCounty: routeList[]
-//   KinmenCounty: routeList[]
-// }
