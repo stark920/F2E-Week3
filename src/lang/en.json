@@ -77,5 +77,10 @@
     "L": "L",
     "JOY": "Medical",
     "express": "Express"
-  }
+  },
+  "collect": {
+    "route": "My Routes",
+    "stop": "My Stops"
+  },
+  "allCity": "All Cities"
 }

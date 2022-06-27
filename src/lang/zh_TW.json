@@ -77,5 +77,10 @@
     "L": "L",
     "JOY": "JOY",
     "express": "快線"
-  }
+  },
+  "collect": {
+    "route": "收藏路線",
+    "stop": "收藏站點"
+  },
+  "allCity": "所有城市"
 }

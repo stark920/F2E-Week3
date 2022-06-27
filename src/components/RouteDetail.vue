@@ -3,7 +3,7 @@ import IconHeart from './icons/IconHeart.vue'
 import IconHeartFill from './icons/IconHeartFill.vue'
 import IconLeft from './icons/IconLeft.vue'
 import IconRefresh from './icons/IconRefresh.vue'
-import StopCard from './StopCard.vue'
+import StopOfRouteCard from './StopOfRouteCard.vue'
 
 import { onBeforeUnmount, onMounted, reactive } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -151,18 +151,20 @@ onBeforeUnmount(() => {
           : route.RouteName.En ?? route.RouteName.Zh_tw
       }}
     </h3>
-    <small> {{ route.RouteName.En ?? route.RouteName.Zh_tw }} </small>
+    <small v-show="lang === 'zh-TW'">
+      {{ route.RouteName.En ?? route.RouteName.Zh_tw }}
+    </small>
   </section>
 
-  <section class="flex h-[2rem]">
+  <section class="flex h-[4rem]">
     <label
       v-if="data.go.length > 0"
       class="flex-grow"
       @change="showRoutes.changeDirection(0)">
       <input type="radio" name="direction" class="peer hidden" checked />
       <div
-        class="cursor-pointer rounded-t-md bg-gray-300 py-2 text-center peer-checked:bg-primary peer-checked:text-white">
-        {{ t('goTo') }}
+        class="flex-c h-full cursor-pointer gap-2 rounded-t-md bg-gray-300 px-2 peer-checked:bg-primary peer-checked:text-white">
+        <span>{{ t('goTo') }}</span>
         <strong>
           {{
             lang === 'zh-TW'
@@ -178,8 +180,8 @@ onBeforeUnmount(() => {
       @change="showRoutes.changeDirection(1)">
       <input type="radio" name="direction" class="peer hidden" />
       <div
-        class="cursor-pointer rounded-t-md bg-gray-300 py-2 text-center peer-checked:bg-primary peer-checked:text-white">
-        {{ t('goTo') }}
+        class="flex-c h-full cursor-pointer gap-2 rounded-t-md bg-gray-300 px-2 peer-checked:bg-primary peer-checked:text-white">
+        <span>{{ t('goTo') }}</span>
         <strong>
           {{
             lang === 'zh-TW'
@@ -195,7 +197,7 @@ onBeforeUnmount(() => {
       @change="showRoutes.changeDirection(2)">
       <input type="radio" name="direction" class="peer hidden" checked />
       <div
-        class="cursor-pointer rounded-t-md bg-gray-300 py-2 text-center peer-checked:bg-primary peer-checked:text-white">
+        class="flex-c h-full cursor-pointer rounded-t-md bg-gray-300 peer-checked:bg-primary peer-checked:text-white">
         <strong>
           {{
             lang === 'zh-TW'
@@ -213,11 +215,11 @@ onBeforeUnmount(() => {
     </label>
   </section>
 
-  <section class="h-[calc(100%-13rem)] overflow-y-scroll pb-8 pt-4">
-    <StopCard
+  <section class="h-[calc(100%-15rem)] overflow-y-scroll pb-8">
+    <StopOfRouteCard
       v-for="stop in showRoutes.data"
       :key="stop.StopUID"
-      :data="stop"></StopCard>
+      :data="stop"></StopOfRouteCard>
   </section>
 
   <section class="relative mx-4 flex h-[3rem] items-center justify-between">

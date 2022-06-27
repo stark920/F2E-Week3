@@ -68,7 +68,6 @@ const routeDetail = reactive({
       routeDetail.data = apiData
       routeDetail.currentRoute = route
       routeDetail.isShow = true
-      console.log(apiData)
     } else {
       toast.error('取得資料失敗，請稍後再試')
     }

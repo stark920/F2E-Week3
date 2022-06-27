@@ -55,10 +55,12 @@ const isArriving = (time: number) => {
     <div class="flex-c">
       <div
         :class="timeToStyle(data.EstimateTime ?? -1)"
-        class="mr-4 w-[5rem] rounded-lg py-1 text-white">
+        class="mr-4 w-[5rem] flex-shrink-0 rounded-lg py-1 text-white">
         {{ timeToText(data.EstimateTime ?? -1, data.NextBusTime) }}
       </div>
-      <div :class="{ 'font-bold': isArriving(data.EstimateTime ?? -1) }">
+      <div
+        :class="{ 'font-bold': isArriving(data.EstimateTime ?? -1) }"
+        class="whitespace-pre-wrap text-left">
         {{
           lang === 'zh-TW'
             ? data.StopName.Zh_tw
@@ -66,7 +68,9 @@ const isArriving = (time: number) => {
         }}
       </div>
     </div>
-    <div v-if="data.PlateNumb" class="p-1 font-bold text-secondary">
+    <div
+      v-if="data.PlateNumb && data.PlateNumb !== '-1'"
+      class="whitespace-nowrap p-1 font-bold text-secondary">
       {{ data.PlateNumb }}
     </div>
     <div class="absolute right-0 top-1/2 h-full w-[2px] bg-gray-500"></div>

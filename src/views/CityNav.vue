@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import IconInfo from '@/components/icons/IconInfo.vue'
+import BreadCrumb from '@/components/BreadCrumb.vue'
+
 import { useBusStore } from '@/stores/bus'
 import { storeToRefs } from 'pinia'
 import { useI18n } from 'vue-i18n'
+
 const { t } = useI18n()
 const busStore = useBusStore()
 const { currentCity } = storeToRefs(busStore)
+
 const selections = [
   'Taipei',
   'Taoyuan',
@@ -37,34 +40,25 @@ const selections = [
         id="city"
         v-model="currentCity"
         name="city"
-        class="rounded-lg border-none bg-transparent">
+        class="rounded-lg border-none bg-gray-300 text-gray-700 focus:ring-0">
+        <option value="" disabled selected>{{ t('select.City') }}</option>
         <option v-for="city in selections" :key="city" :value="city">
           {{ t(`select.${city}`) }}
         </option>
       </select>
     </div>
   </div>
-  <section v-else class="flex h-full items-center justify-between px-4">
-    <div>
-      <span>{{ t('select.City') }}：</span>
-      <select
-        id="city"
-        v-model="currentCity"
-        name="city"
-        class="rounded-lg border-none bg-transparent text-center focus:ring-0">
-        <option v-for="city in selections" :key="city" :value="city">
-          {{ t(`select.${city}`) }}
-        </option>
-      </select>
-    </div>
-    <div>
-      <a
-        href="https://www.taiwanbus.tw/"
-        target="_blank"
-        class="flex-c hover:underline">
-        <IconInfo class="mr-2 h-6 w-6"></IconInfo>
-        {{ t('schedule') }}
-      </a>
-    </div>
-  </section>
+
+  <BreadCrumb>
+    <span>{{ t('select.City') }}：</span>
+    <select
+      id="city"
+      v-model="currentCity"
+      name="city"
+      class="rounded-lg border-none bg-transparent text-center focus:ring-0">
+      <option v-for="city in selections" :key="city" :value="city">
+        {{ t(`select.${city}`) }}
+      </option>
+    </select>
+  </BreadCrumb>
 </template>

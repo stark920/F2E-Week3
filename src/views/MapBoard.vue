@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import 'leaflet/dist/leaflet.css'
-import L, { map } from 'leaflet'
+import L from 'leaflet'
 
 import positionIcon from '@/assets/position.png'
 import busStopIcon from '@/assets/busStop.png'
@@ -132,17 +132,19 @@ const mapData = {
   }
 }
 
-watch(routeLine, (newValue) => {
+watch([routeLine, lang], ([newValue]) => {
   if (!newValue || newValue.length === 0) {
     return
   }
   const markers = newValue.map((stop: mapRouteLine) => {
     let className = 'leaflet-popup-custom '
     let icon
-    if (stop.TimeString === '進站中' || stop.TimeString === '即將進站') {
+    if (
+      ['進站中', '即將進站', 'Arriving', 'Upcoming'].includes(stop.TimeString)
+    ) {
       className += 'leaflet-popup-custom-arrival'
       icon = mapSettings.stopArrivingIcon
-    } else if (stop.TimeString === '未發車') {
+    } else if (['未發車', 'No Dep.'].includes(stop.TimeString)) {
       className += 'leaflet-popup-custom-null'
       icon = mapSettings.stopIcon
     } else {
@@ -192,13 +194,13 @@ watch(routeLine, (newValue) => {
 watch(userPosition, (newPosition) => {
   if (newPosition && mapData.map) {
     if (mapData.locateMarker) {
-      mapData.map.removeLayer(mapData.locateMarker)
+      mapData.locateMarker.setLatLng(newPosition)
+    } else {
+      mapData.locateMarker = L.marker(newPosition, {
+        icon: mapSettings.myLocationIcon
+      }).addTo(mapData.map)
     }
-    const position = newPosition as unknown as L.LatLng
-    mapData.locateMarker = L.marker(position, {
-      icon: mapSettings.myLocationIcon
-    }).addTo(mapData.map)
-    mapData.map.flyTo(position, 16)
+    mapData.map.flyTo(newPosition, 16)
   }
 })
 
@@ -206,8 +208,7 @@ watch(userPosition, (newPosition) => {
 watch(viewPosition, (newPosition) => {
   if (!mapData.map) return
   if (newPosition) {
-    const position = newPosition as unknown as L.LatLng
-    mapData.map.flyTo(position, 19)
+    mapData.map.flyTo(newPosition, 19)
   }
 })
 

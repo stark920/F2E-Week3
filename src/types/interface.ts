@@ -1,3 +1,6 @@
+/**
+ * 附近站點：一個站點會包含多個站牌（路線數量 * 去、回程）
+ */
 export interface nearbyStation {
   StationID: string
   StationUID: string
@@ -14,6 +17,9 @@ export interface nearbyStation {
   City: string
 }
 
+/**
+ * 附近站牌：包含站牌所屬的路線起點、終點資訊及預估時間
+ */
 export interface nearbyStopOfRoute {
   RouteUID: string
   Direction: number
@@ -33,6 +39,9 @@ export interface nearbyStopOfRoute {
   City: string
 }
 
+/**
+ * 路線資訊：包含起點和終點
+ */
 export interface routeList {
   RouteUID: string
   RouteName: {
@@ -47,6 +56,9 @@ export interface routeList {
   City: string
 }
 
+/**
+ * 站牌資訊：包含座標＋預估時間
+ */
 export interface busStop{
   RouteName: {
     Zh_tw: string,
@@ -69,6 +81,9 @@ export interface busStop{
   StopUID: string
 }
 
+/**
+ * 繪製地圖路線用的個站牌位置格式
+ */
 export interface mapRouteLine{
   TimeString: string
   StopName: {
