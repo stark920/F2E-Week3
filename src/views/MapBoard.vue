@@ -18,8 +18,13 @@ import type { mapRouteLine } from '@/types/interface'
 const toast = useToast()
 const mapStore = useMapStore()
 const langStore = useLangStore()
-const { userPosition, viewPosition, nearbyStation, focusStopIndex, routeLine } =
-  storeToRefs(mapStore)
+const {
+  userPosition,
+  viewPosition,
+  nearbyStationsData,
+  focusStopIndex,
+  routeLine
+} = storeToRefs(mapStore)
 const { lang } = storeToRefs(langStore)
 
 const mapSettings = {
@@ -218,37 +223,41 @@ watch(focusStopIndex, (newIndex, oldIndex) => {
 
   if (newIndex !== oldIndex && oldIndex !== -1) {
     const oldMarker = mapData.mapMarkers[oldIndex]
-    const popupContent = oldMarker.getPopup()?.getContent()
+    if (oldMarker) {
+      const popupContent = oldMarker.getPopup()?.getContent()
+      const popup = L.popup({
+        autoClose: false,
+        closeButton: false,
+        className: 'leaflet-popup-custom leaflet-popup-custom-default'
+      }).setContent(popupContent ?? '')
+      oldMarker
+        .setIcon(mapSettings.stopIcon)
+        .closePopup()
+        .unbindPopup()
+        .bindPopup(popup)
+        .openPopup()
+    }
+  }
+
+  const newMarker = mapData.mapMarkers[newIndex]
+  if (newMarker) {
+    const popupContent = newMarker.getPopup()?.getContent()
     const popup = L.popup({
       autoClose: false,
       closeButton: false,
-      className: 'leaflet-popup-custom leaflet-popup-custom-default'
+      className: 'leaflet-popup-custom leaflet-popup-custom-focus'
     }).setContent(popupContent ?? '')
-    oldMarker
-      .setIcon(mapSettings.stopIcon)
+    newMarker
+      .setIcon(mapSettings.stopFocusIcon)
       .closePopup()
       .unbindPopup()
       .bindPopup(popup)
       .openPopup()
   }
-
-  const newMarker = mapData.mapMarkers[newIndex]
-  const popupContent = newMarker.getPopup()?.getContent()
-  const popup = L.popup({
-    autoClose: false,
-    closeButton: false,
-    className: 'leaflet-popup-custom leaflet-popup-custom-focus'
-  }).setContent(popupContent ?? '')
-  newMarker
-    .setIcon(mapSettings.stopFocusIcon)
-    .closePopup()
-    .unbindPopup()
-    .bindPopup(popup)
-    .openPopup()
 })
 
 // mark all nearby stations
-watch(nearbyStation, (newStation) => {
+watch(nearbyStationsData, (newStation) => {
   if (!mapData.map) return
 
   if (newStation && newStation.length > 0) {

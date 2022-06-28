@@ -1,13 +1,13 @@
 import { defineStore } from 'pinia'
 import { useToast } from 'vue-toastification'
-import type { routeList, nearbyStopOfRoute } from '@/types/interface'
+import type { routeList, nearbyStation } from '@/types/interface'
 const toast = useToast()
 
 export const useLikesStore = defineStore({
   id: 'likes',
   state: () => ({
     likeRoutes: [] as routeList[],
-    likeStops: [] as nearbyStopOfRoute[]
+    likeStations: [] as nearbyStation[]
   }),
   persist: true, // save in localStorage
   actions: {
@@ -21,14 +21,14 @@ export const useLikesStore = defineStore({
         toast.success('已收藏路線')
       }
     },
-    toggleLikeStops(data: nearbyStopOfRoute) {
-      const index = this.likeStops.indexOf(data)
+    toggleLikeStations(data: nearbyStation) {
+      const index = this.likeStations.findIndex((el) => el.StationUID === data.StationUID)
       if (index >= 0) {
-        this.likeStops.splice(index, 1)
-        toast.error('已取消收藏站牌')
+        this.likeStations.splice(index, 1)
+        toast.error('已取消收藏站點')
       } else {
-        this.likeStops.push(data)
-        toast.success('已收藏站牌')
+        this.likeStations.push(data)
+        toast.success('已收藏站點')
       }
     }
   }

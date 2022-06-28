@@ -35,7 +35,7 @@ function getTime(data: string) {
 }
 
 function timeToStyle(time?: number) {
-  if (time === -1 || !time) {
+  if (time === -1 || typeof time === 'undefined') {
     return 'bg-gray-500'
   } else if (time < 60) {
     return 'bg-secondary'

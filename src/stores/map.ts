@@ -6,7 +6,8 @@ export const useMapStore = defineStore({
   state: () => ({
     viewPosition: undefined as [number, number] | undefined,
     userPosition: undefined as [number, number] | undefined,
-    nearbyStation: undefined as nearbyStation[] | undefined,
+    nearbyStationsData: undefined as nearbyStation[] | undefined,
+    selectedStationData: undefined as nearbyStation | undefined,
     routeLine: undefined as mapRouteLine[] | undefined,
     focusStopIndex: -1 as number
   }),
@@ -20,9 +21,6 @@ export const useMapStore = defineStore({
       if (Lat >= -90 && Lat <= 90 && Lon >= -180 && Lon <= 180) {
         this.userPosition = [Lat, Lon]
       }
-    },
-    updateNearByStation(data: nearbyStation[]) {
-      this.nearbyStation = data
     }
   }
 })

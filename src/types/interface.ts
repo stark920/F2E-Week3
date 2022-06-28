@@ -27,7 +27,7 @@ export interface nearbyStopOfRoute {
   PlateNumb?: string
   RouteName: {
     Zh_tw: string
-    En: string
+    En?: string
   }
   IsLastBus?: boolean
   DepartureStopNameZh: string
@@ -35,7 +35,7 @@ export interface nearbyStopOfRoute {
   DestinationStopNameZh: string
   DestinationStopNameEn?: string
   RouteMapImageUrl?: string
-  EstimateTime: number
+  EstimateTime?: number
   City: string
 }
 

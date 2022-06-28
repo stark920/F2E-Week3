@@ -135,7 +135,9 @@ onBeforeUnmount(() => {
       <IconLeft></IconLeft>
       <span class="ml-1">{{ t('back') }}</span>
     </button>
-    <div class="cursor-pointer" @click="likeStore.toggleLikeRoutes(route)">
+    <div
+      class="flex-c h-full cursor-pointer"
+      @click="likeStore.toggleLikeRoutes(route)">
       <IconHeartFill
         v-if="likeRoutes.findIndex((el) => el.RouteUID === route.RouteUID) >= 0"
         class="h-5 w-5 text-secondary"></IconHeartFill>

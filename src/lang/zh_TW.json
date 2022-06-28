@@ -56,6 +56,7 @@
   "upcoming": "即將進站",
   "arriving": "進站中",
   "schedule": "時刻表",
+  "showMap": "顯示地圖",
   "typeKeyword": "輸入關鍵字",
   "back": "返回",
   "afterTime": "倒數",
@@ -80,7 +81,9 @@
   },
   "collect": {
     "route": "收藏路線",
-    "stop": "收藏站點"
+    "station": "收藏站點"
   },
-  "allCity": "所有城市"
+  "allCity": "所有城市",
+  "getLocation": "正在取得您的位置資訊",
+  "getLocationFailed": "無法取得位置資訊"
 }
