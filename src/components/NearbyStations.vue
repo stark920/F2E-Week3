@@ -44,13 +44,15 @@ onMounted(async () => {
   if (userPosition.value) {
     const lat = userPosition.value[0]
     const lng = userPosition.value[1]
-    const data = await busApi.getNearbyStation(lat, lng)
-    if (data) nearbyStationsData.value = data
+    if (lat && lng) {
+      const data = await busApi.getNearbyStation(lat, lng)
+      if (data) nearbyStationsData.value = data
+    }
   }
 })
 
 watch(userPosition, async (newPosition) => {
-  if (newPosition) {
+  if (newPosition && newPosition.length > 1) {
     const data = await busApi.getNearbyStation(newPosition[0], newPosition[1])
     if (data) nearbyStationsData.value = data
   }

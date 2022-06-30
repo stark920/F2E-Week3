@@ -204,7 +204,7 @@ const getCityName = (keyword: string, select: string) => {
 const getNearbyStation = async (Lat: number, Lon: number, DistanceInMeters = 1000) => {
   if (DistanceInMeters > 1000 || Lat < -90 || Lat > 90 || Lon < -180 || Lon > 180) return null
   const selection = ['StationUID','StationID','StationName','StationPosition','Stops','LocationCityCode']
-  const url = 'https://tdx.transportdata.tw/api/advanced/v2/Bus/Station/NearBy'
+  const url = 'https://genos-cors-anywhere.herokuapp.com/https://tdx.transportdata.tw/api/advanced/v2/Bus/Station/NearBy'
   try {
     const res = await busRequest.get(`${url}?$select=${selection.join(',')}&$spatialFilter=nearby(${Lat}, ${Lon}, ${DistanceInMeters})&$format=JSON`)
     if (res.data) {
@@ -235,7 +235,7 @@ const getNearbyStation = async (Lat: number, Lon: number, DistanceInMeters = 100
 const getNearbyStationWithArrival = async (id: string, city: string) => {
   const timeSelections = ['RouteUID','Direction','NextBusTime','PlateNumb','RouteName','IsLastBus','EstimateTime']
   const routeSelections = ['RouteUID','DepartureStopNameZh','DepartureStopNameEn','DestinationStopNameZh','DestinationStopNameEn','RouteMapImageUrl','City']
-  const url = `https://tdx.transportdata.tw/api/advanced/v2/Bus`
+  const url = `https://genos-cors-anywhere.herokuapp.com/https://tdx.transportdata.tw/api/advanced/v2/Bus`
   
   try {
     const EstimateTime = busRequest.get(`${url}/EstimatedTimeOfArrival/City/${city}/PassThrough/Station/${id}?$select=${timeSelections.join(',')}&$format=JSON`)
